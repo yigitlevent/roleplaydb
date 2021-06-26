@@ -1,12 +1,9 @@
 import { createContext } from "react";
+import { User } from "@supabase/supabase-js";
 
 export const ClientContext = createContext({
 	clientState: "precheck" as rdb.ClientState,
-	userName: undefined as undefined | string,
-	userRole: undefined as undefined | rdb.UserRoles,
-	timeZone: undefined as undefined | string,
+	user: undefined as undefined | User,
 	setClientState: (() => { /* */ }) as rdb.DispSet<rdb.ClientState>,
-	setUserName: (() => { /* */ }) as rdb.DispSet<undefined | string>,
-	setUserRole: (() => { /* */ }) as rdb.DispSet<undefined | rdb.UserRoles>,
-	setTimeZone: (() => { /* */ }) as rdb.DispSet<undefined | string>
+	setUser: (() => { /* */ }) as rdb.DispSet<undefined | User>
 });

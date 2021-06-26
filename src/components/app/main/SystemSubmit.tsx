@@ -1,4 +1,6 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
+
+import { ClientContext } from "../../../contexts/Contexts";
 
 import { Advancement, BasicValues, Conflict, Creation, Equipment, Levels } from "../../../data/Data";
 
@@ -10,8 +12,27 @@ import { Submit } from "../../shared/Button";
 
 import { DatabaseClient } from "../../App";
 
-export function SubmitSystem(): JSX.Element {
-	const submit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
+export function SystemSubmit(): JSX.Element {
+	const { user } = useContext(ClientContext);
+
+	const checkSubmissionCount = useCallback(async (): Promise<boolean> => {
+		try {
+			const { error, count } = await DatabaseClient.from("submitted_systems")
+				.select("*", { count: "exact", head: true }).eq("uuid", user?.id);
+
+			if (error) throw error;
+
+			if (count && count > 9) return false;
+
+			return true;
+		}
+		catch (error) {
+			console.log(error);
+			return false;
+		}
+	}, [user?.id]);
+
+	const submit = useCallback(async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 
 		const elements = [...(event.target as HTMLFormElement).children].filter((v) => v.children.length > 1);
@@ -24,13 +45,16 @@ export function SubmitSystem(): JSX.Element {
 			else form[child.name] = child.value;
 		});
 
+		form["submitted_by"] = user?.user_metadata.full_name;
+
 		try {
+			if (!checkSubmissionCount()) throw new Error("You have 10 pending system submissions, wait for them to be approved or rejected first.");
 			const { data, error } = await DatabaseClient.from("submitted_systems").insert(form);
 			if (error) throw error;
 			else console.log(data);
 		}
 		catch (error) { console.log(error); }
-	}, []);
+	}, [checkSubmissionCount, user?.user_metadata.full_name]);
 
 	return (
 		<FormWrapper onSubmit={event => submit(event)}>

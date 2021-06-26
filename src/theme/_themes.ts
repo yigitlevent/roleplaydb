@@ -45,51 +45,42 @@ const DarkColors = {
 };
 
 export const DarkTheme: rdb.theme.Palette = {
-	level1: {
-		background: DarkColors.grey[975],
-		color: DarkColors.grey[300],
+	backgrounds: {
+		level1: DarkColors.grey[975],
+		level2: DarkColors.grey[950],
+		level3: DarkColors.grey[925],
+		level4: DarkColors.grey[900],
+		level5: DarkColors.grey[300],
+		link: "none",
+		success: "none",
+		warning: "none",
+		error: "none",
+		info: "none"
 	},
 
-	level2: {
-		background: DarkColors.grey[950],
-		border: `1px ${DarkColors.red[700]} solid`,
+	colors: {
+		level1: DarkColors.grey[300],
+		level2: "none",
+		level3: "none",
+		level4: "none",
+		level5: "none",
+		link: DarkColors.red[300],
+		success: DarkColors.green[300],
+		warning: DarkColors.yellow[300],
+		error: DarkColors.red[300],
+		info: DarkColors.blue[300]
 	},
 
-	level3: {
-		background: DarkColors.grey[925],
-		border: `1px ${DarkColors.grey[600]} solid`,
-	},
-
-	level4: {
-		background: DarkColors.grey[900],
-		backgroundLight: DarkColors.grey[300],
-		border: `1px ${DarkColors.grey[850]} solid`,
-	},
-
-	link: {
-		color: DarkColors.grey[200]
-	},
-
-	success: {
-		color: DarkColors.green[300],
-		border: `1px ${DarkColors.green[700]} solid`,
-	},
-
-	warning: {
-		color: DarkColors.yellow[300],
-		border: `1px ${DarkColors.yellow[700]} solid`,
-	},
-
-	error: {
-		color: DarkColors.red[300],
-		border: `1px ${DarkColors.red[700]} solid`,
-	},
-
-	info: {
-		color: DarkColors.blue[300],
-		border: `1px ${DarkColors.blue[700]} solid`,
-	},
-
-	transparent: "rgba(21,  21,  21,  0.8)",  // grey[925]
-	gradient: `linear-gradient(180deg, ${DarkColors.red[900]} 0%, rgba(0, 0, 0, 0.0) 100%)`,
+	borders: {
+		level1: "none",
+		level2: `1px ${DarkColors.red[700]} solid`,
+		level3: `1px ${DarkColors.grey[600]} solid`,
+		level4: `1px ${DarkColors.grey[850]} solid`,
+		level5: "none",
+		link: "none",
+		success: `1px ${DarkColors.green[700]} solid`,
+		warning: `1px ${DarkColors.yellow[700]} solid`,
+		error: `1px ${DarkColors.red[700]} solid`,
+		info: `1px ${DarkColors.blue[700]} solid`
+	}
 };

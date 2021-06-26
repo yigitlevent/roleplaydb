@@ -3,13 +3,13 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 	@font-face {
         font-family: ${(props: rdb.theme.StyleProps) => props.mainFont};
-        src: ${(props: rdb.theme.StyleProps) => `url("./assets/fonts/${props.mainFont}.ttf")`};
+        src: ${(props: rdb.theme.StyleProps) => `url("${process.env.REACT_APP_REDIRECT_URL as string}/assets/fonts/${props.mainFont}.ttf")`};
 		font-display: block;
     };
 
 	@font-face {
         font-family: ${(props: rdb.theme.StyleProps) => props.italicFont};
-        src: ${(props: rdb.theme.StyleProps) => `url("./assets/fonts/${props.italicFont}.ttf")`};
+        src: ${(props: rdb.theme.StyleProps) => `url("${process.env.REACT_APP_REDIRECT_URL as string}/assets/fonts/${props.italicFont}.ttf")`};
 		font-display: block;
     };
 
@@ -18,9 +18,9 @@ export const GlobalStyle = createGlobalStyle`
 		tab-size: 4;
 
 		scrollbar-width: thin;
-		scrollbar-color: ${(props: rdb.theme.StyleProps) => props.theme.level4.backgroundLight} ${(props: rdb.theme.StyleProps) => props.theme.level4.background};
+		scrollbar-color: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level5} ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level4};
 
-		color: ${(props: rdb.theme.StyleProps) => props.theme.level1.color};
+		color: ${(props: rdb.theme.StyleProps) => props.theme.colors.level1};
 
 		font-kerning: auto;
 		font-size: 1.00em;
@@ -61,7 +61,7 @@ export const GlobalStyle = createGlobalStyle`
 	#root {
 		margin: 0;
 		padding: 0;
-		background-color: ${(props: rdb.theme.StyleProps) => props.theme.level1.background};
+		background: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level1};
 	}
 
 	label {
@@ -73,7 +73,7 @@ export const GlobalStyle = createGlobalStyle`
 		cursor: pointer;
 
 		&:hover {
-			filter: brightness(100%);
+			filter: brightness(140%);
 		}
 
 		& > span {

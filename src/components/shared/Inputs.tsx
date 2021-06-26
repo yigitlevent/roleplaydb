@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Input = styled.input`
-	background: ${(props: rdb.theme.StyleProps) => props.theme.level4.background};
-	color: ${(props: rdb.theme.StyleProps) => props.theme.level1.color};
+	background: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level4};
+	color: ${(props: rdb.theme.StyleProps) => props.theme.colors.level1};
 	outline: none;
 	border: none;
 	padding: 0;
@@ -13,14 +13,14 @@ export const Input = styled.input`
 	}
 
 	&:checked {
-		background: ${(props: rdb.theme.StyleProps) => props.theme.level4.backgroundLight};
+		background: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level5};
 	}
 
 	&:focus,
 	&:focus-visible,
 	&:visited {
 		text-decoration: none;
-		outline: ${(props: rdb.theme.StyleProps) => props.theme.level4.border};
+		outline: ${(props: rdb.theme.StyleProps) => props.theme.borders.level4};
 	}
 
 	&:disabled, 
@@ -62,8 +62,8 @@ export const Input = styled.input`
 `;
 
 export const Select = styled.select`
-	background: ${(props: rdb.theme.StyleProps) => props.theme.level4.background};
-	color: ${(props: rdb.theme.StyleProps) => props.theme.level1.color};
+	background: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level4};
+	color: ${(props: rdb.theme.StyleProps) => props.theme.colors.level1};
 	outline: none;
 	border: none;
 	appearance: none;

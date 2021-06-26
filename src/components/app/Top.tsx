@@ -1,7 +1,9 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useCallback, useContext } from "react";
 import { Provider } from "@supabase/supabase-js";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
+import { RoutesArray } from "../../data/Data";
 
 import { ClientContext } from "../../contexts/Contexts";
 
@@ -11,19 +13,18 @@ import { DatabaseClient } from "../App";
 const TopWrapper = styled.div`
 	position: sticky;
 	width: 100%;
-	height: 32px;
+	height: max-content;
 	top: 0;
 	overflow: hidden;
 `;
 
 const Topbar = styled.div`
 	width: 100%;
-	height: 100%;
 
-	background: ${(props: rdb.theme.StyleProps) => props.theme.level2.background};
+	background: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level2};
 
 	display: flex;
-	flex-flow: row;
+	flex-flow: row wrap;
 	justify-content: space-between;
 	align-items: center;
 	align-content: center;
@@ -35,8 +36,11 @@ const Topbar = styled.div`
 `;
 
 const Title = styled.div`
-	font-size: 1.2em;
-	margin: 0 10px 0 3px;
+	& > a {
+		font-variation-settings: 'wght' 600;
+		font-size: 1.2em;
+		margin: 0 10px 0 3px;
+	}
 `;
 
 const TopMenu = styled.div`
@@ -47,47 +51,70 @@ const TopMenu = styled.div`
 	}
 
 	& > *:not(:last-child) {
-		border-right: ${(props: rdb.theme.StyleProps) => props.theme.level3.border};
+		border-right: ${(props: rdb.theme.StyleProps) => props.theme.borders.level3};
 	}
 `;
 
 export function Top(): JSX.Element {
-	const { userName, clientState, setClientState } = useContext(ClientContext);
+	const { clientState, user, setClientState } = useContext(ClientContext);
 
-	const signOut = async (): Promise<void> => {
+	const signOut = useCallback(async (): Promise<void> => {
 		try {
-			await DatabaseClient.auth.signOut();
-			setClientState("signedout");
+			const { error } = await DatabaseClient.auth.signOut();
+			if (error) throw error;
+			else setClientState("signedout");
 		}
 		catch (error) { console.log(error); }
-	};
+	}, [setClientState]);
 
-	const signIn = async (provider: Provider): Promise<void> => {
+	const signIn = useCallback(async (provider: Provider): Promise<void> => {
 		try {
-			DatabaseClient.auth.signIn({ provider: provider }, { redirectTo: process.env.REACT_APP_REDIRECT_URL });
+			const { error } = await DatabaseClient.auth.signIn({ provider: provider }, { redirectTo: process.env.REACT_APP_REDIRECT_URL });
+			if (error) throw error;
 		}
 		catch (error) { console.log(error); }
-	};
+	}, []);
+
+	const links = RoutesArray.map((v) => {
+		return (
+			<Fragment key={v.singular}>
+				<Link to={`/${v.plural.toLowerCase()}/list`}>
+					{v.plural}
+				</Link>
+
+				{(clientState === "signedin")
+					? <Link to={`/${v.plural.toLowerCase()}/submit`}>
+						<Icon iconName={"import"} size={18} title={`Submit a ${v.singular}`} inline />
+					</Link>
+					: null
+				}
+				{(user?.role === "admin")
+					? <Link to={`/${v.plural.toLowerCase()}/queue`}>
+						<Icon iconName={"export"} size={18} title={`Review ${v.singular} Submissions`} inline />
+					</Link>
+					: null
+				}
+			</Fragment>
+		);
+	});
 
 	return (
 		<TopWrapper>
 			<Topbar>
-				<Icon iconName={"menu_switch"} size={30} title={"Menu"} onClick={() => { }} />
+				{/*<Icon iconName={"menu_switch"} size={30} title={"Menu"} onClick={() => { }} />*/}
 
 				<Title>
 					<Link to="/">RoleplayDB {(clientState === "offline") ? "(Offline)" : ""}</Link>
 				</Title>
 
-				<TopMenu>
-					<Link to="/systems">Systems</Link>
-					<Link to="/submit_system">Submit a System</Link>
-					<Link to="/settings">Settings</Link>
-				</TopMenu>
+				<TopMenu>{links}</TopMenu>
 
 				{(clientState === "signedin")
 					? <Fragment>
-						<div>{`Welcome, ${userName}`}</div>
-						<Icon iconName={"portrait"} size={30} title={"Account"} onClick={() => { }} />
+						<div>{`Welcome, ${user?.user_metadata.full_name}`}</div>
+						<Link to="/account">
+							<Icon iconName={"portrait"} size={30} title={"Account"} />
+						</Link>
 						<Icon iconName={"logout"} size={30} title={"Sign out"} onClick={() => signOut()} />
 					</Fragment>
 					: null

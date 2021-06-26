@@ -17,10 +17,10 @@ const ButtonShared = styled.input`
 
 export const Button = styled(ButtonShared).attrs({ type: "button" }) <{ noBg?: boolean; center?: boolean; }>`
 	display: ${p => (p.center) ? "block" : "initial"};
-	background: ${p => (p.noBg) ? "none" : (props: rdb.theme.StyleProps) => props.theme.level4.background};
+	background: ${p => (p.noBg) ? "none" : (props: rdb.theme.StyleProps) => props.theme.backgrounds.level4};
 `;
 
 export const Submit = styled(ButtonShared).attrs({ type: "submit" }) <{ noBg?: boolean; center?: boolean; }>`
 	display: ${p => (p.center) ? "block" : "initial"};
-	background: ${p => (p.noBg) ? "none" : (props: rdb.theme.StyleProps) => props.theme.level4.background};
+	background: ${p => (p.noBg) ? "none" : (props: rdb.theme.StyleProps) => props.theme.backgrounds.level4};
 `;

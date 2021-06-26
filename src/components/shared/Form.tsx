@@ -5,7 +5,7 @@ export const FormWrapper = styled.form`
 	max-width: 100%;
 	margin: 4px auto;
 	padding: 4px;
-	background: ${(props: rdb.theme.StyleProps) => props.theme.level2.background};
+	background: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level2};
 `;
 
 export const FormRowWrapper = styled.div<{ hasHelp: boolean; }>`
@@ -15,7 +15,7 @@ export const FormRowWrapper = styled.div<{ hasHelp: boolean; }>`
 
 	margin: 2px;
 	padding: 5px;
-	background: ${(props: rdb.theme.StyleProps) => props.theme.level3.background};
+	background: ${(props: rdb.theme.StyleProps) => props.theme.backgrounds.level3};
 
 	&:hover{
 		filter: brightness(110%);

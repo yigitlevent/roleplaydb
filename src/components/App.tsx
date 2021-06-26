@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { createClient, Session } from "@supabase/supabase-js";
+import { createClient, Session, User } from "@supabase/supabase-js";
 
 import { ClientContext } from "../contexts/Contexts";
 
@@ -10,44 +10,40 @@ export const DatabaseClient = createClient(process.env.REACT_APP_DATABASE_URL as
 
 export function App(): JSX.Element {
 	const [clientState, setClientState] = useState<rdb.ClientState>("presign");
-	const [userName, setUserName] = useState<undefined | string>(undefined);
-	const [userRole, setUserRole] = useState<undefined | rdb.UserRoles>(undefined);
-	const [timeZone, setTimeZone] = useState<undefined | string>(undefined);
+	const [user, setUser] = useState<undefined | User>(undefined);
 
 	// TODO: Delete later
 	console.log(process.env.NODE_ENV);
 
-	const refreshProfile = useCallback(async (id: string) => {
+	const refreshProfile = useCallback(async (user: User) => {
 		try {
-			const { data, error } = await DatabaseClient.from("profiles").select().eq("uuid", id);
+			const { data, error } = await DatabaseClient.from("profiles").select().eq("uuid", user.id);
 
 			if (error) throw error;
 
 			if (data?.length === 1) {
-				setUserRole(data[0].role);
-				setTimeZone(data[0].timezone);
+				user.role = data[0].role;
+				setUser(user);
 			}
 			else if (data?.length === 0) {
 				const { error } = await DatabaseClient.from("profiles")
-					.insert({ uuid: id, role: "user", timezone: "" });
+					.insert({ uuid: user.id, role: "user" });
 
 				if (error) throw error;
 			}
-			else throw "multiple profiles";
+			else throw new Error("incorrect number of profiles");
 		}
 		catch (error) { console.log(error); }
 	}, []);
 
 	const setSessionData = useCallback((session: Session | null) => {
 		if (session && session.user) {
-			setUserName(session.user.user_metadata.full_name);
 			setClientState("signedin");
-			refreshProfile(session.user.id);
+			refreshProfile(session.user);
 		}
 		else {
-			setUserName(undefined);
+			setUser(undefined);
 			setClientState("signedout");
-			setUserRole(undefined);
 		}
 	}, [refreshProfile]);
 
@@ -67,7 +63,7 @@ export function App(): JSX.Element {
 	}, []);
 
 	return (
-		<ClientContext.Provider value={{ clientState, userName, userRole, timeZone, setClientState, setUserName, setUserRole, setTimeZone }}>
+		<ClientContext.Provider value={{ clientState, user, setClientState, setUser }}>
 			<Top />
 			<Main />
 		</ClientContext.Provider >

@@ -9,44 +9,44 @@ namespace rdb {
 		}
 
 		interface Palette {
-			level1: {
-				background: string;
-				color: string;
+			backgrounds: {
+				level1: string;
+				level2: string;
+				level3: string;
+				level4: string;
+				level5: string;
+				link: string;
+				success: string;
+				warning: string;
+				error: string;
+				info: string
 			};
-			level2: {
-				background: string;
-				border: string;
+
+			colors: {
+				level1: string;
+				level2: string;
+				level3: string;
+				level4: string;
+				level5: string;
+				link: string;
+				success: string;
+				warning: string;
+				error: string;
+				info: string;
 			};
-			level3: {
-				background: string;
-				border: string;
+
+			borders: {
+				level1: string;
+				level2: string;
+				level3: string;
+				level4: string;
+				level5: string;
+				link: string;
+				success: string;
+				warning: string;
+				error: string;
+				info: string;
 			};
-			level4: {
-				background: string;
-				backgroundLight: string;
-				border: string;
-			};
-			link: {
-				color: string;
-			};
-			success: {
-				color: string;
-				border: string;
-			};
-			warning: {
-				color: string;
-				border: string;
-			};
-			error: {
-				color: string;
-				border: string;
-			};
-			info: {
-				color: string;
-				border: string;
-			};
-			transparent: string;
-			gradient: string;
 		}
 
 	}
